@@ -151,3 +151,10 @@ const Game = (() => { //싱글톤 오브젝트로 생성
 })();
 
 Game('#stage');
+
+
+const el = (ele, idx) => document.createElement(ele).setAttribute('src', idx);
+const srclist = ['경로', '경로', '경로'];
+const rand = Math.random() * 3; 
+
+el('div', rand)
