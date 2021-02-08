@@ -109,4 +109,27 @@ const Game = class {
         }
         if(coll.length) Promise.all(coll).then(_=>this.fillStart());
     }
+
+    _fillStart() {
+        const {items, column, row, renderer, item2msg} = this;
+        const allItems = [];
+
+        for(let i=row; i--;) allItems.push([]);
+        items.forEach(item => (allItems[item.y][item.x] = item));
+
+        const coll = [];
+        for(let c =0; c<column; c++) {
+            for(let r = row -1; r>-1; r--) {
+                if(allItems[r] && !allItems[r][c]) {
+                    coll.push(this._add(c,r))    ;
+                }
+            }
+        }
+        // 이동
+        if(!coll.length) return;
+        Promise.all(coll.map(item => {
+            item.pos(item.x, item.y+row);
+            return renderer.move(item2msg.get(item).pos(item.x, item.y));
+        }).then(_=>renderer.activate()))
+    }
 }
